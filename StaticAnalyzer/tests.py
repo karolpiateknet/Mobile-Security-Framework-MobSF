@@ -25,6 +25,12 @@ def static_analysis_test():
         http_client = Client()
         apk_dir = os.path.join(settings.BASE_DIR, 'StaticAnalyzer/test_files/')
         for filename in os.listdir(apk_dir):
+            if not filename.endswith((
+                    '.apk',
+                    '.ipa',
+                    '.appx',
+                    '.zip')):
+                continue
             fpath = os.path.join(apk_dir, filename)
             with open(fpath, 'rb') as filp:
                 response = http_client.post('/upload/', {'file': filp})
@@ -57,6 +63,7 @@ def static_analysis_test():
                 '/PDF/?md5=52c50ae824e329ba8b5b7a0f523efffe',
                 '/PDF/?md5=57bb5be0ea44a755ada4a93885c3825e',
                 '/PDF/?md5=8179b557433835827a70510584f3143e',
+                '/PDF/?md5=7b0a23bffc80bac05739ea1af898daad',
             ]
         else:
             pdfs = [
@@ -64,6 +71,7 @@ def static_analysis_test():
                 '/PDF/?md5=52c50ae824e329ba8b5b7a0f523efffe',
                 '/PDF/?md5=57bb5be0ea44a755ada4a93885c3825e',
                 '/PDF/?md5=8179b557433835827a70510584f3143e',
+                '/PDF/?md5=7b0a23bffc80bac05739ea1af898daad',
             ]
 
         for pdf in pdfs:
@@ -97,12 +105,14 @@ def static_analysis_test():
                          '6c23c2970551be15f32bbab0b5db0c71',
                          '52c50ae824e329ba8b5b7a0f523efffe',
                          '57bb5be0ea44a755ada4a93885c3825e',
-                         '8179b557433835827a70510584f3143e']
+                         '8179b557433835827a70510584f3143e',
+                         '7b0a23bffc80bac05739ea1af898daad']
         else:
             scan_md5s = ['3a552566097a8de588b8184b059b0158',
                          '52c50ae824e329ba8b5b7a0f523efffe',
                          '57bb5be0ea44a755ada4a93885c3825e',
-                         '8179b557433835827a70510584f3143e']
+                         '8179b557433835827a70510584f3143e',
+                         '7b0a23bffc80bac05739ea1af898daad']
         for md5 in scan_md5s:
             resp = http_client.post('/delete_scan/', {'md5': md5})
             if resp.status_code == 200:
@@ -131,6 +141,12 @@ def api_test():
         http_client = Client()
         apk_dir = os.path.join(settings.BASE_DIR, 'StaticAnalyzer/test_files/')
         for filename in os.listdir(apk_dir):
+            if not filename.endswith((
+                    '.apk',
+                    '.ipa',
+                    '.appx',
+                    '.zip')):
+                continue
             fpath = os.path.join(apk_dir, filename)
             if (platform.system() not in ['Darwin', 'Linux']
                     and fpath.endswith('.ipa')):
@@ -183,6 +199,7 @@ def api_test():
                 {'hash': '52c50ae824e329ba8b5b7a0f523efffe'},
                 {'hash': '57bb5be0ea44a755ada4a93885c3825e'},
                 {'hash': '8179b557433835827a70510584f3143e'},
+                {'hash': '7b0a23bffc80bac05739ea1af898daad'},
             ]
         else:
             pdfs = [
@@ -190,6 +207,7 @@ def api_test():
                 {'hash': '52c50ae824e329ba8b5b7a0f523efffe'},
                 {'hash': '57bb5be0ea44a755ada4a93885c3825e'},
                 {'hash': '8179b557433835827a70510584f3143e'},
+                {'hash': '7b0a23bffc80bac05739ea1af898daad'},
             ]
         for pdf in pdfs:
             resp = http_client.post(
@@ -253,12 +271,14 @@ def api_test():
                          '52c50ae824e329ba8b5b7a0f523efffe',
                          '57bb5be0ea44a755ada4a93885c3825e',
                          '8179b557433835827a70510584f3143e',
+                         '7b0a23bffc80bac05739ea1af898daad',
                          ]
         else:
             scan_md5s = ['3a552566097a8de588b8184b059b0158',
                          '52c50ae824e329ba8b5b7a0f523efffe',
                          '57bb5be0ea44a755ada4a93885c3825e',
                          '8179b557433835827a70510584f3143e',
+                         '7b0a23bffc80bac05739ea1af898daad',
                          ]
         for md5 in scan_md5s:
             resp = http_client.post(
